@@ -129,7 +129,7 @@ control<- list(
 
 #MODEL YG HANYA MEMPERHATIKAN EFEK FIXED
 Model1 <- dbd~KP+PHBS+CHUJAN+SUHU+LEMBAB
-RModelRun1<- inla(Model1, family="poisson",data=DBD,E=Ei,
+RModelRun1<- inla(Model1, family="nbinomial",data=DBD,E=Ei,
                   control.compute = control$compute,
                   control.predictor = control$predictor,
                   control.inla = list(tolerance=1e-20, h=1e-8,int.strategy = "eb", strategy ="simplified.laplace")
@@ -140,7 +140,7 @@ summary(RModelRun1)
 #MODEL MEMPERHATIKAN EFEK SPASIAL = LEROUX
 #PAKE besagproper2 
 Model2 <- dbd~f(ID1,model="besagproper2",graph = Ws, constr = T)+KP+PHBS+CHUJAN+SUHU+LEMBAB
-RModelRun2 <- inla(Model2,family="poisson",data=DBD,E=Ei,
+RModelRun2 <- inla(Model2,family="nbinomial",data=DBD,E=Ei,
                    control.compute = control$compute,
                    control.predictor = control$predictor,
                    control.inla = list(tolerance=1e-20, h=1e-8,int.strategy = "eb", strategy = "simplified.laplace")
@@ -149,7 +149,7 @@ summary(RModelRun2)
 
 #MODEL MEMPERHATIKAN EFEK TEMPORAL = RW2
 Model3<- dbd~f(IT1,model="rw2", constr=T)+KP+PHBS+CHUJAN+SUHU+LEMBAB
-RModelRun3<- inla(Model3, family="poisson",data=DBD,E=Ei,
+RModelRun3<- inla(Model3, family="nbinomial",data=DBD,E=Ei,
                   control.compute = control$compute,
                   control.predictor = control$predictor,
                   control.inla = list(tolerance=1e-20, h=1e-8,int.strategy = "eb", strategy ="simplified.laplace")
@@ -165,7 +165,7 @@ Model4 <- dbd ~ KP+PHBS+CHUJAN+SUHU+LEMBAB+
   f(IT1,model="rw2", constr=T)+
   f(ID1,model="besagproper2",graph=Ws, constr=T)
 
-RModelRun4 <- inla(Model4, family="poisson",data=DBD,E=Ei,
+RModelRun4 <- inla(Model4, family="nbinomial",data=DBD,E=Ei,
                   control.compute = control$compute,
                   control.predictor = control$predictor,
                   control.inla = list(tolerance=1e-20, h=1e-8,int.strategy = "eb", strategy ="simplified.laplace")
@@ -179,7 +179,7 @@ Model5<- dbd ~ KP+PHBS+CHUJAN+SUHU+LEMBAB+
   f(IT1,model="rw2", constr=T)+
   f(ID2,model="besagproper2",graph=Ws,initial=1,constr=T, group=IT2,control.group=list(model="rw2"))
 
-RModelRun5<- inla(Model5, family="poisson",data=DBD,E=Ei,
+RModelRun5<- inla(Model5, family="nbinomial",data=DBD,E=Ei,
                   control.compute = control$compute,
                   control.predictor = control$predictor,
                   control.inla = list(tolerance=1e-20, h=1e-8,int.strategy = "eb", strategy = "simplified.laplace")
@@ -221,7 +221,7 @@ Modelfix<- dbd ~ KP+PHBS+SUHU+CHUJAN+LEMBAB+
   f(IT1,model="rw2", constr=T)+
   f(ID2,model="besagproper2",graph=Ws,initial=1,constr=T, group=IT2,control.group=list(model="rw2"))
 
-RModelfix<- inla(Modelfix, family="poisson",data=DBD,E=Ei,
+RModelfix<- inla(Modelfix, family="nbinomial",data=DBD,E=Ei,
                  control.compute = control$compute,
                  control.predictor = control$predictor,
                  control.inla = list(tolerance=1e-20, h=1e-8,int.strategy = "eb", strategy = "simplified.laplace")
